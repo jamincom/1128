@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>똑바로해</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #webcam-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        #webcam {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #add-monitor {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            cursor: pointer;
+        }
+
+        .person {
+            position: absolute;
+            width: 200px; /* 사진 너비를 200px로 설정 */
+            height: 200px; /* 사진 높이를 200px로 설정 */
+            background-size: cover;
+            border: 0px solid white;
+        }
+    </style>
+</head>
+<body>
+    <div id="webcam-container">
+        <video id="webcam" autoplay playsinline></video>
+        <button id="add-monitor">감시 인원 추가</button>
+    </div>
+    <script>
+        const videoElement = document.getElementById("webcam");
+        const addMonitorButton = document.getElementById("add-monitor");
+        const webcamContainer = document.getElementById("webcam-container");
+
+        // 이미지 URL 목록을 배열로 저장
+        const imageUrls = [
+            'https://ifh.cc/g/jq9VgY.png', // 여기에 실제 이미지 URL을 입력
+            'https://ifh.cc/g/wH8vlG.png',
+            'https://ifh.cc/g/M0hnvt.png',
+            'https://ifh.cc/g/H4DkjD.png',
+            'https://ifh.cc/g/JjP2QK.png',
+            'https://ifh.cc/g/cnw2mk.png',
+            'https://ifh.cc/g/wxySMd.png',
+            'https://ifh.cc/g/C1j62j.png',
+            'https://ifh.cc/g/fSCrsg.png',
+            'https://ifh.cc/g/RdCqMO.png'
+        ];
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                videoElement.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error("Webcam access error:", error);
+            });
+
+        addMonitorButton.addEventListener("click", () => {
+            const personDiv = document.createElement("div");
+            personDiv.classList.add("person");
+
+            // 이미지 목록에서 랜덤하게 선택
+            const randomImage = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+            personDiv.style.backgroundImage = `url('${randomImage}')`;
+
+            const randomX = Math.random() * (webcamContainer.offsetWidth - 200);
+            const randomY = Math.random() * (webcamContainer.offsetHeight - 200);
+
+            personDiv.style.left = `${randomX}px`;
+            personDiv.style.top = `${randomY}px`;
+
+            webcamContainer.appendChild(personDiv);
+        });
+    </script>
+</body>
+</html>
